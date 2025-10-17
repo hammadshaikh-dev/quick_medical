@@ -1,0 +1,57 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'screens/splash_screen.dart';
+import 'screens/onboarding_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/product_detail_screen.dart';
+import 'screens/cart_screen.dart';
+import 'screens/profile_screen.dart';
+import 'providers/cart_provider.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Quick Medical',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          primaryColor: Colors.blue[700],
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.blue[700],
+            elevation: 0,
+          ),
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.blue.shade700,
+            textTheme: ButtonTextTheme.primary,
+          ),
+          textTheme: const TextTheme(
+            bodyLarge: TextStyle(color: Colors.black87),
+            titleLarge: TextStyle(color: Colors.white),
+          ),
+        ),
+        initialRoute: '/splash',
+        routes: {
+          '/splash': (context) => const SplashScreen(),
+          '/onboarding': (context) => const OnboardingScreen(),
+          '/login': (context) => const LoginScreen(),
+          '/home': (context) => const HomeScreen(),
+          '/product_detail': (context) => const ProductDetailScreen(),
+          '/cart': (context) => const CartScreen(),
+          '/profile': (context) => const ProfileScreen(),
+        },
+      ),
+    );
+  }
+}
