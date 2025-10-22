@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1044097755143",
+    "project_id": "hear-my-door-l",
+    "storage_bucket": "hear-my-door-l.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044097755143:android:87ea4c0345623a810fe2a2",
+        "android_client_info": {
+          "package_name": "com.example.firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUJs_v5aiSwNw0_4KcTnOa2wErssUTi88"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044097755143:android:8d6b24056161ac260fe2a2",
+        "android_client_info": {
+          "package_name": "com.example.quick_medical"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUJs_v5aiSwNw0_4KcTnOa2wErssUTi88"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

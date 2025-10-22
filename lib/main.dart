@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';           // ✅ Correct import
+import 'firebase_options.dart';                             // ✅ Import Firebase options
 import 'screens/splash_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/login_screen.dart';
@@ -9,7 +11,13 @@ import 'screens/cart_screen.dart';
 import 'screens/profile_screen.dart';
 import 'providers/cart_provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();                 // ✅ Required before Firebase init
+
+  await Firebase.initializeApp(                             // ✅ Initialize Firebase
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -24,6 +32,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Quick Medical',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
           primaryColor: Colors.blue[700],
