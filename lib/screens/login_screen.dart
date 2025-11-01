@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:quick_medical/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,87 +10,82 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final AuthService _authService = AuthService();
 
-  Future<void> signInWithGoogle() async {
+  bool _isLoading = false;
+
+  Future<void> _signInWithGoogle() async {
+    setState(() => _isLoading = true);
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-
-      if (googleUser == null) {
-        // The user canceled the sign-in
-        return;
+      final user = await _authService.signInWithGoogle();
+      if (user != null) {
+        Navigator.pushReplacementNamed(context, '/home');
       }
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      await _auth.signInWithCredential(credential);
-
-      // Navigate to HomeScreen on success
-      Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error signing in: $e')),
       );
+    } finally {
+      setState(() => _isLoading = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quick Medical'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Quick Medical'), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Please Enter your Mobile Number to Login/Sign Up'),
+            const Text('Enter your Mobile Number to Login/Sign Up'),
             const SizedBox(height: 20),
             TextField(
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: '+91 9265614292',
+                hintText: '+91 9876543210',
               ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Add validation if needed
                 Navigator.pushReplacementNamed(context, '/home');
               },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-              ),
               child: const Text('CONTINUE'),
             ),
             const SizedBox(height: 20),
             const Text('OR'),
             const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: signInWithGoogle,
-              icon: Image.asset('assets/google_logo.png', height: 24),
-              label: const Text('Sign in with Google'),
+            ElevatedButton(
+              onPressed: _isLoading ? null : _signInWithGoogle,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
+                elevation: 2,
                 side: const BorderSide(color: Colors.grey),
               ),
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.network(
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgAX6pfIIUrgZrffI-Jv9xSvUjs1eCmPZ6bLohXa-mqAYGEdWNSEowb2Gi_4FzXMcfeOY&usqp=CAU',
+                          height: 24,
+                        ),
+                        const SizedBox(width: 12),
+                        const Text(
+                          'Sign in with Google',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
             ),
           ],
         ),

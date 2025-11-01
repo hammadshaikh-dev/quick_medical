@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';           // ✅ Correct import
-import 'firebase_options.dart';                             // ✅ Import Firebase options
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'providers/cart_provider.dart';
 import 'screens/splash_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/login_screen.dart';
@@ -9,12 +10,10 @@ import 'screens/home_screen.dart';
 import 'screens/product_detail_screen.dart';
 import 'screens/cart_screen.dart';
 import 'screens/profile_screen.dart';
-import 'providers/cart_provider.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();                 // ✅ Required before Firebase init
-
-  await Firebase.initializeApp(                             // ✅ Initialize Firebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
@@ -35,15 +34,19 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          primaryColor: Colors.blue[700],
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: AppBarTheme(
             backgroundColor: Colors.blue[700],
             elevation: 0,
           ),
-          buttonTheme: ButtonThemeData(
-            buttonColor: Colors.blue.shade700,
-            textTheme: ButtonTextTheme.primary,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue.shade700,
+              minimumSize: const Size(double.infinity, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
           ),
           textTheme: const TextTheme(
             bodyLarge: TextStyle(color: Colors.black87),
